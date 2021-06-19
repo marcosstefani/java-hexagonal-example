@@ -4,7 +4,7 @@ import io.github.marcosstefani.hexagonal.core.model.ForecastDTO;
 
 import java.util.List;
 
-public interface ForecastDriven {
+public interface ForecastUseCase {
     List<ForecastDTO> getForecastDataForACity(String city);
     void updateForecastDataForACity(String city);
 }
