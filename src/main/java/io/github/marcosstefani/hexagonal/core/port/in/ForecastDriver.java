@@ -2,7 +2,7 @@ package io.github.marcosstefani.hexagonal.core.port.in;
 
 import io.github.marcosstefani.hexagonal.core.model.ForecastDTO;
 
-public interface ForecastPort {
+public interface ForecastDriver {
     ForecastDTO getCurrentForecastDataForACity(String city);
     void updateForecastDataForACity(String city);
 }
