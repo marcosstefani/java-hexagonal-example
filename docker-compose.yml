@@ -1,0 +1,36 @@
+version: "3.9"
+
+networks:
+  database_net:
+    name: database_net
+    driver: bridge
+  broker_net:
+    name: broker_net
+    driver: bridge
+
+services:
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - 5672:5672
+      - 15672:15672
+    volumes:
+      - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq
+      - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
+    networks:
+      - broker_net
+
+  database:
+    image: postgres
+    container_name: postgres
+    volumes:
+      - ~/.docker-conf/postgres/data/:/var/lib/postgres
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 12345
+      POSTGRES_DB: postgres
+    networks:
+      - database_net
