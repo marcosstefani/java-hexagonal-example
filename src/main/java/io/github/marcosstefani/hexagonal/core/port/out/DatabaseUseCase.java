@@ -5,5 +5,6 @@ import io.github.marcosstefani.hexagonal.core.model.ForecastDTO;
 import java.util.List;
 
 public interface DatabaseUseCase {
-    void savaForecastList(List<ForecastDTO> forecastDTOList);
+    void saveForecastList(List<ForecastDTO> forecastDTOList);
+    ForecastDTO getCurrentForecast(String city);
 }

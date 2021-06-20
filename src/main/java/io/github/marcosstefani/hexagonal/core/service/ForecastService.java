@@ -1,5 +1,6 @@
 package io.github.marcosstefani.hexagonal.core.service;
 
+import io.github.marcosstefani.hexagonal.core.exception.ForecastNotFoundException;
 import io.github.marcosstefani.hexagonal.core.model.ForecastDTO;
 import io.github.marcosstefani.hexagonal.core.port.in.ForecastInput;
 import io.github.marcosstefani.hexagonal.core.port.out.DatabaseUseCase;
@@ -19,14 +20,20 @@ public class ForecastService implements ForecastInput {
 
     @Override
     public ForecastDTO getCurrentForecastDataForACity(String city) {
-        return null;
+        logger.info("Getting {} city forecast information", city);
+        return databaseUseCase.getCurrentForecast(city);
     }
 
     @Override
     public void updateForecastDataForACity(String city) {
         logger.info("Updating {} city forecast information", city);
         List<ForecastDTO> forecastDTOList = forecastUseCase.getForecastDataForACity(city);
-        databaseUseCase.savaForecastList(forecastDTOList);
+        if (forecastDTOList == null || forecastDTOList.isEmpty()) {
+            logger.error("Forecast for {} city not found", city);
+            throw new ForecastNotFoundException(String.format("Forecast for %s city not found", city));
+        }
+
+        databaseUseCase.saveForecastList(forecastDTOList);
         logger.info("{} city forecast successfully updated.", city);
     }
 }

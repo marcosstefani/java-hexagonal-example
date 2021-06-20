@@ -6,5 +6,4 @@ import java.util.List;
 
 public interface ForecastUseCase {
     List<ForecastDTO> getForecastDataForACity(String city);
-    void updateForecastDataForACity(String city);
 }
