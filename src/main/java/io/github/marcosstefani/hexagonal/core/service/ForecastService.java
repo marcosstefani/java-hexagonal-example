@@ -21,7 +21,12 @@ public class ForecastService implements ForecastInput {
     @Override
     public ForecastDTO getCurrentForecastDataForACity(String city) {
         logger.info("Getting {} city forecast information", city);
-        return databaseUseCase.getCurrentForecast(city);
+        ForecastDTO currentForecast = databaseUseCase.getCurrentForecast(city);
+        if (currentForecast == null) {
+            logger.error("Current forecast for {} city not found", city);
+            throw new ForecastNotFoundException(String.format("Current forecast for %s city not found", city));
+        }
+        return currentForecast;
     }
 
     @Override
