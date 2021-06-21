@@ -21,7 +21,11 @@ public class PostgresAdapter implements DatabaseUseCase {
                 Forecast.builder().forecastDTO(forecastDTO).build()
         ).collect(Collectors.toList());
 
-        forecastRepository.saveAll(forecasts);
+        List<Forecast> list = forecasts.stream().filter(forecast -> forecastRepository
+                .quantityOfForecastByCityAndTime(forecast.getForecastDTO().getCity(), forecast.getForecastDTO().getReferenceDate()) == 0)
+                .collect(Collectors.toList());
+
+        forecastRepository.saveAll(list);
     }
 
     @Override

@@ -5,6 +5,7 @@ import io.github.marcosstefani.hexagonal.core.model.ForecastDTO;
 import io.github.marcosstefani.hexagonal.core.port.in.ForecastInput;
 import io.github.marcosstefani.hexagonal.core.port.out.DatabaseUseCase;
 import io.github.marcosstefani.hexagonal.core.port.out.ForecastUseCase;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -12,11 +13,12 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class ForecastService implements ForecastInput {
     private static Logger logger = LoggerFactory.getLogger(ForecastService.class);
 
-    private ForecastUseCase forecastUseCase;
-    private DatabaseUseCase databaseUseCase;
+    private final ForecastUseCase forecastUseCase;
+    private final DatabaseUseCase databaseUseCase;
 
     @Override
     public ForecastDTO getCurrentForecastDataForACity(String city) {
