@@ -1,6 +1,8 @@
 package io.github.marcosstefani.hexagonal.adapter.postgres.domain;
 
 import io.github.marcosstefani.hexagonal.core.model.ForecastDTO;
+import lombok.Builder;
+import lombok.Data;
 
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -10,6 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.Index;
 import javax.persistence.Table;
 
+@Data
+@Builder
 @Entity
 @Table(indexes = @Index(columnList = "city,referenceDate"))
 public class Forecast {
