@@ -12,4 +12,5 @@ import org.springframework.context.annotation.Configuration;
 public class OpenWeatherProperties {
     private String apiKey;
     private String url;
+    private String timezoneId;
 }

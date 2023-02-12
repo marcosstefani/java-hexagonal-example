@@ -6,6 +6,6 @@ import java.time.ZoneId;
 
 public class DateUtil {
     public static LocalDateTime getLocalDateTime(int instant) {
-        return Instant.ofEpochSecond(instant).atZone(ZoneId.systemDefault()).toLocalDateTime();
+        return Instant.ofEpochSecond(instant).atZone(ZoneId.of("Europe/Lisbon")).toLocalDateTime();
     }
 }

@@ -4,12 +4,12 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class DateUtilTest {
     @Test
     void shouldReturnLocalDateTime() {
         LocalDateTime calc = DateUtil.getLocalDateTime(1624244400);
-        assertEquals(LocalDateTime.of(2021, 6, 21, 0, 0, 0), calc);
+        assertEquals(LocalDateTime.of(2021, 6, 21, 4, 0, 0), calc);
     }
 }
