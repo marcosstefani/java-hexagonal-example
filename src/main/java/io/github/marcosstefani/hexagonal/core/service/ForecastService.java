@@ -10,7 +10,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
+
+import static java.util.Objects.isNull;
 
 @Service
 @RequiredArgsConstructor
@@ -21,9 +25,12 @@ public class ForecastService implements ForecastInput {
     private final DatabaseUseCase databaseUseCase;
 
     @Override
-    public ForecastDTO getCurrentForecastDataForACity(String city) {
+    public ForecastDTO getForecastDataForACity(String city, LocalDate date) {
         logger.info("Getting {} city forecast information", city);
-        ForecastDTO currentForecast = databaseUseCase.getCurrentForecast(city);
+        ForecastDTO currentForecast = isNull(date) ?
+                databaseUseCase.getCurrentForecast(city) :
+                databaseUseCase.getLastForecastByDate(city, date);
+
         if (currentForecast == null) {
             logger.error("Current forecast for {} city not found", city);
             throw new ForecastNotFoundException(String.format("Current forecast for %s city not found", city));

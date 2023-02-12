@@ -11,11 +11,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.anyString;
 import static org.mockito.Mockito.doNothing;
@@ -40,16 +42,26 @@ class ForecastServiceTest {
     void shouldReturnTheReturnedRecordWhenThisOccurs() {
         doReturn(ForecastStub.buildForecastDTO()).when(databaseUseCase).getCurrentForecast(anyString());
 
-        assertDoesNotThrow(() -> forecastService.getCurrentForecastDataForACity(CURITIBA));
+        assertDoesNotThrow(() -> forecastService.getForecastDataForACity(CURITIBA, null));
 
         verify(databaseUseCase, times(1)).getCurrentForecast(CURITIBA);
     }
 
     @Test
-    void shouldRaiseExceptionWhenNotFoundReccord() {
+    void shouldReturnTheReturnedRecordFromDateWhenThisOccurs() {
+        doReturn(ForecastStub.buildForecastDTO()).when(databaseUseCase).getLastForecastByDate(anyString(), any(LocalDate.class));
+
+        final LocalDate date = LocalDate.now();
+        assertDoesNotThrow(() -> forecastService.getForecastDataForACity(CURITIBA, date));
+
+        verify(databaseUseCase, times(1)).getLastForecastByDate(CURITIBA, date);
+    }
+
+    @Test
+    void shouldRaiseExceptionWhenNotFoundRecord() {
         doReturn(null).when(databaseUseCase).getCurrentForecast(anyString());
 
-        assertThrows(ForecastNotFoundException.class, () -> forecastService.getCurrentForecastDataForACity(CURITIBA));
+        assertThrows(ForecastNotFoundException.class, () -> forecastService.getForecastDataForACity(CURITIBA, null));
     }
 
     @Test

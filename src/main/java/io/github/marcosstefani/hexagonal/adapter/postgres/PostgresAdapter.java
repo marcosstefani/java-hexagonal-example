@@ -7,6 +7,7 @@ import io.github.marcosstefani.hexagonal.core.port.out.DatabaseUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,6 +32,13 @@ public class PostgresAdapter implements DatabaseUseCase {
     @Override
     public ForecastDTO getCurrentForecast(String city) {
         Forecast currentForecast = forecastRepository.findCurrentForecast(city);
+        if (currentForecast == null || currentForecast.getForecastDTO() == null) return null;
+        return currentForecast.getForecastDTO();
+    }
+
+    @Override
+    public ForecastDTO getLastForecastByDate(String city, LocalDate date) {
+        Forecast currentForecast = forecastRepository.findLastForecastByReferenceDate(city, date.getYear(), date.getMonthValue(), date.getDayOfMonth());
         if (currentForecast == null || currentForecast.getForecastDTO() == null) return null;
         return currentForecast.getForecastDTO();
     }

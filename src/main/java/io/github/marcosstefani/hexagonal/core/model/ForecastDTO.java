@@ -22,4 +22,16 @@ public class ForecastDTO {
     private BigDecimal maximumTemperature;
     private BigDecimal feelsLike;
     private BigDecimal humidity;
+
+    public int referenceDateDay() {
+        return referenceDate.getDayOfMonth();
+    }
+
+    public int referenceDateMonth() {
+        return referenceDate.getMonth().getValue();
+    }
+
+    public int referenceDateYear() {
+        return referenceDate.getYear();
+    }
 }

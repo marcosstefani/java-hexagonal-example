@@ -11,7 +11,7 @@ networks:
 services:
   rabbitmq:
     image: rabbitmq:3-management
-    container_name: rabbitmq
+    container_name: rabbitmq-hx
     ports:
       - 5672:5672
       - 15672:15672
@@ -23,7 +23,7 @@ services:
 
   database:
     image: postgres
-    container_name: postgres
+    container_name: postgres-hx
     volumes:
       - ~/.docker-conf/postgres/data/:/var/lib/postgres
     ports:
