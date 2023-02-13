@@ -19,7 +19,7 @@ import static java.util.Objects.isNull;
 @Service
 @RequiredArgsConstructor
 public class ForecastService implements ForecastInput {
-    private static Logger logger = LoggerFactory.getLogger(ForecastService.class);
+    private static final Logger logger = LoggerFactory.getLogger(ForecastService.class);
 
     private final ForecastUseCase forecastUseCase;
     private final DatabaseUseCase databaseUseCase;
