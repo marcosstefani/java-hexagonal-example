@@ -16,6 +16,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static java.util.Collections.emptyList;
+
 @Service
 @RequiredArgsConstructor
 public class OpenWeatherAdapter implements ForecastUseCase {
@@ -31,10 +33,10 @@ public class OpenWeatherAdapter implements ForecastUseCase {
             responseDTO = restTemplate.getForObject(buildUrl(city), ForecastResponseDTO.class);
         } catch (HttpClientErrorException e) {
             logger.error("Error when consulting the weather forecast to {}", city);
-            return Collections.emptyList();
+            return emptyList();
         }
 
-        if (responseDTO == null || responseDTO.getList() == null || responseDTO.getList().isEmpty()) return Collections.emptyList();
+        if (responseDTO == null || responseDTO.getList() == null || responseDTO.getList().isEmpty()) return emptyList();
 
         return responseDTO.getList().stream().map(forecast ->
                 ForecastDTO.builder()

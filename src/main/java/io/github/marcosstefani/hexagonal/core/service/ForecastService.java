@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Objects;
 
 import static java.util.Objects.isNull;
 
@@ -42,7 +41,7 @@ public class ForecastService implements ForecastInput {
     public void updateForecastDataForACity(String city) {
         logger.info("Updating {} city forecast information", city);
         List<ForecastDTO> forecastDTOList = forecastUseCase.getForecastDataForACity(city);
-        if (forecastDTOList == null || forecastDTOList.isEmpty()) {
+        if (isNull(forecastDTOList) || forecastDTOList.isEmpty()) {
             logger.error("Forecast for {} city not found", city);
             throw new ForecastNotFoundException(String.format("Forecast for %s city not found", city));
         }

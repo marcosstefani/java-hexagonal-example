@@ -17,7 +17,10 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
+import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
@@ -47,19 +50,26 @@ public abstract class BaseIntegrationTest {
         when(databaseUseCase.getCurrentForecast(city)).thenReturn(forecastDTO);
     }
 
-    protected void mockGetLastForecastByDateFromDatabase(String city) {
-        final LocalDate now = LocalDate.now();
+    protected void mockGetCurrentForecastFromDatabaseWithNull() {
+        when(databaseUseCase.getCurrentForecast(anyString())).thenReturn(null);
+    }
+
+    protected void mockGetLastForecastByDateFromDatabase(String city, LocalDate date) {
         final ForecastDTO forecastDTO = ForecastDTO.builder()
                 .city(city)
                 .currentTemperature(BigDecimal.TEN)
-                .referenceDate(LocalDateTime.of(now, LocalTime.now()))
+                .referenceDate(LocalDateTime.of(date, LocalTime.now()))
                 .feelsLike(BigDecimal.TEN.subtract(BigDecimal.ONE))
                 .humidity(BigDecimal.ONE)
                 .maximumTemperature(BigDecimal.TEN.add(BigDecimal.ONE))
                 .minimumTemperature(BigDecimal.ONE)
                 .build();
 
-        when(databaseUseCase.getLastForecastByDate(city, now)).thenReturn(forecastDTO);
+        when(databaseUseCase.getLastForecastByDate(city, date)).thenReturn(forecastDTO);
+    }
+
+    protected void mockGetLastForecastByDateFromDatabaseWithNull() {
+        when(databaseUseCase.getLastForecastByDate(anyString(), any(LocalDate.class))).thenReturn(null);
     }
 
     protected List<ForecastDTO> mockGetForecastDataForACity(String city) {
@@ -78,5 +88,9 @@ public abstract class BaseIntegrationTest {
         when(forecastUseCase.getForecastDataForACity(city)).thenReturn(result);
 
         return result;
+    }
+
+    protected void mockEmptyGetForecastDataForACity() {
+        when(forecastUseCase.getForecastDataForACity(anyString())).thenReturn(emptyList());
     }
 }
