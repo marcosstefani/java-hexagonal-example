@@ -9,4 +9,6 @@ public interface DatabaseUseCase {
     void saveForecastList(List<ForecastDTO> forecastDTOList);
     ForecastDTO getCurrentForecast(String city);
     ForecastDTO getLastForecastByDate(String city, LocalDate date);
+
+    List<String> getRegisteredCities();
 }

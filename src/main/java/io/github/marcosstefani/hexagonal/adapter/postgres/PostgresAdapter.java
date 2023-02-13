@@ -8,8 +8,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
+
+import static java.util.Collections.emptyList;
+import static java.util.Objects.isNull;
 
 @Service
 @RequiredArgsConstructor
@@ -32,14 +37,23 @@ public class PostgresAdapter implements DatabaseUseCase {
     @Override
     public ForecastDTO getCurrentForecast(String city) {
         Forecast currentForecast = forecastRepository.findCurrentForecast(city);
-        if (currentForecast == null || currentForecast.getForecastDTO() == null) return null;
+        if (isNull(currentForecast) || isNull(currentForecast.getForecastDTO())) return null;
         return currentForecast.getForecastDTO();
     }
 
     @Override
     public ForecastDTO getLastForecastByDate(String city, LocalDate date) {
         Forecast currentForecast = forecastRepository.findLastForecastByReferenceDate(city, date.getYear(), date.getMonthValue(), date.getDayOfMonth());
-        if (currentForecast == null || currentForecast.getForecastDTO() == null) return null;
+        if (isNull(currentForecast) || isNull(currentForecast.getForecastDTO())) return null;
         return currentForecast.getForecastDTO();
+    }
+
+    @Override
+    public List<String> getRegisteredCities() {
+        List<String> list = forecastRepository.registeredCities();
+        if (isNull(list)) {
+            return emptyList();
+        }
+        return list;
     }
 }

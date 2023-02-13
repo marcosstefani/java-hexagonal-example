@@ -7,6 +7,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Repository
 public interface ForecastRepository extends JpaRepository<Forecast, Integer> {
@@ -33,4 +34,7 @@ public interface ForecastRepository extends JpaRepository<Forecast, Integer> {
 
     @Query(value = "select count(f) from Forecast f where f.forecastDTO.city = :city and f.forecastDTO.referenceDate = :referenceDate")
     Integer quantityOfForecastByCityAndTime(@Param("city") String city, @Param(("referenceDate")) LocalDateTime referenceDate);
+
+    @Query(value = "select distinct f.city from forecast f", nativeQuery = true)
+    List<String> registeredCities();
 }
