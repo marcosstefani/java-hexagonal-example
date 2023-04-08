@@ -4,6 +4,9 @@ networks:
   database_net:
     name: database_net
     driver: bridge
+  broker_net:
+    name: broker_net
+    driver: bridge
 
 services:
   database:
