@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -55,7 +56,9 @@ class RestControllerTest extends BaseIntegrationTest {
     void shouldReturnTheLastForecastIfExistsForSpecificDate() {
         final LocalDate now = LocalDate.now();
         mockGetLastForecastByDateFromDatabase(city, now);
-        ResponseEntity<ForecastDTO> responseEntity = testRestTemplate.getForEntity(String.format("/forecast/%s?date=2023-02-13", city), ForecastDTO.class);
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String formattedDate = now.format(dateTimeFormatter);
+        ResponseEntity<ForecastDTO> responseEntity = testRestTemplate.getForEntity(String.format("/forecast/%s?date=%s", city, formattedDate), ForecastDTO.class);
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         verify(databaseUseCase, times(0)).getCurrentForecast(city);
         verify(databaseUseCase, times(1)).getLastForecastByDate(anyString(), any(LocalDate.class));
